@@ -103,13 +103,13 @@ TIME%>%
 
 #####----------Capacity Calculation----------#####
 Exp1_k <- Exp1_fh %>%
-  mutate(d2.n4.k=4*(d2_n4_d_h-d2_n4_s_f)/(1-d2_n4_s_f))%>%
-  mutate(d2.n6.k=6*(d2_n6_d_h-d2_n6_s_f)/(1-d2_n6_s_f))%>%
-  mutate(d2.n8.k=8*(d2_n8_d_h-d2_n8_s_f)/(1-d2_n8_s_f))%>%
-  mutate(d3.n4.k=4*(d3_n4_d_h-d3_n4_s_f)/(1-d3_n4_s_f))%>%
-  mutate(d3.n6.k=6*(d3_n6_d_h-d3_n6_s_f)/(1-d3_n6_s_f))%>%
-  mutate(d3.n8.k=8*(d3_n8_d_h-d3_n8_s_f)/(1-d3_n8_s_f))%>%
-  select(subject,contains('k'))
+  mutate(cubes.n4.k=4*(cubes_n4_d_h-cubes_n4_s_f)/(1-cubes_n4_s_f))%>%
+  mutate(cubes.n6.k=6*(cubes_n6_d_h-cubes_n6_s_f)/(1-cubes_n6_s_f))%>%
+  mutate(cubes.n8.k=8*(cubes_n8_d_h-cubes_n8_s_f)/(1-cubes_n8_s_f))%>%
+  mutate(squares.n4.k=4*(squares_n4_d_h-squares_n4_s_f)/(1-squares_n4_s_f))%>%
+  mutate(squares.n6.k=6*(squares_n6_d_h-squares_n6_s_f)/(1-squares_n6_s_f))%>%
+  mutate(squares.n8.k=8*(squares_n8_d_h-squares_n8_s_f)/(1-squares_n8_s_f))%>%
+  select(subject,contains('.k'))
 
 ## wide to long
 Exp1_k_long <- reshape(Exp1_k,
@@ -117,7 +117,7 @@ Exp1_k_long <- reshape(Exp1_k,
                        idvar = 'subject',
                        varying = c(2:7),
                        timevar='dim',
-                       times=c('2D','3D'),
+                       times=c('cubes','squares'),
                        v.names=c('n4', 'n6','n8'))
 
 Exp1_k_long <- gather(Exp1_k_long,

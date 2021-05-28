@@ -133,12 +133,12 @@ re_Exp1_cdt<-
          subject ~ dim + nUs + change, 
          id.var = c("subject", "dim",  "nUs", "change"))
 
-names(re_Exp1_cdt) <- c("subject","d2_n4_s","d2_n4_d","d2_n6_s","d2_n6_d","d2_n8_s","d2_n8_d","d3_n4_s","d3_n4_d","d3_n6_s","d3_n6_d","d3_n8_s","d3_n8_d")
+names(re_Exp1_cdt) <- c("subject","cubes_n4_s","cubes_n4_d","cubes_n6_s","cubes_n6_d","cubes_n8_s","cubes_n8_d","squares_n4_s","squares_n4_d","squares_n6_s","squares_n6_d","squares_n8_s","squares_n8_d")
 
 Exp1_fh <- re_Exp1_cdt %>%
-  mutate_at(c("d2_n4_s","d2_n6_s",
-              "d2_n8_s","d3_n4_s","d3_n6_s",
-              "d3_n8_s"),
+  mutate_at(c("cubes_n4_s","cubes_n6_s",
+              "cubes_n8_s","squares_n4_s","squares_n6_s",
+              "squares_n8_s"),
             list(f=~ifelse(.==1,1/48,1-.)))%>%
   mutate_at(vars(contains('_d')),
             list(h=~ifelse(.==1,1-(1/48),ifelse(.==0,1/48,.))))%>%
@@ -147,13 +147,13 @@ Exp1_fh <- re_Exp1_cdt %>%
 #####----------Bias Calculation----------#####
 
 Exp1_bias <- Exp1_fh %>%
-  mutate(d2.n4.b=exp(-1*(d2_n4_d_h_z^2-d2_n4_s_f_z^2)*0.5))%>%
-  mutate(d2.n6.b=exp(-1*(d2_n6_d_h_z^2-d2_n6_s_f_z^2)*0.5))%>%
-  mutate(d2.n8.b=exp(-1*(d2_n8_d_h_z^2-d2_n8_s_f_z^2)*0.5))%>%
-  mutate(d3.n4.b=exp(-1*(d3_n4_d_h_z^2-d3_n4_s_f_z^2)*0.5))%>%
-  mutate(d3.n6.b=exp(-1*(d3_n6_d_h_z^2-d3_n6_s_f_z^2)*0.5))%>%
-  mutate(d3.n8.b=exp(-1*(d3_n8_d_h_z^2-d3_n8_s_f_z^2)*0.5))%>%
-  select(subject,contains('b'))
+  mutate(cubes.n4.b=exp(-1*(cubes_n4_d_h_z^2-cubes_n4_s_f_z^2)*0.5))%>%
+  mutate(cubes.n6.b=exp(-1*(cubes_n6_d_h_z^2-cubes_n6_s_f_z^2)*0.5))%>%
+  mutate(cubes.n8.b=exp(-1*(cubes_n8_d_h_z^2-cubes_n8_s_f_z^2)*0.5))%>%
+  mutate(squares.n4.b=exp(-1*(squares_n4_d_h_z^2-squares_n4_s_f_z^2)*0.5))%>%
+  mutate(squares.n6.b=exp(-1*(squares_n6_d_h_z^2-squares_n6_s_f_z^2)*0.5))%>%
+  mutate(squares.n8.b=exp(-1*(squares_n8_d_h_z^2-squares_n8_s_f_z^2)*0.5))%>%
+  select(subject,contains('.b'))
 
 ## wide to long
 Exp1_bias_long <- reshape(Exp1_bias,
@@ -161,7 +161,7 @@ Exp1_bias_long <- reshape(Exp1_bias,
                           idvar = 'subject',
                           varying = c(2:7),
                           timevar='dim',
-                          times=c('squares','cubes'),
+                          times=c('cubes','squares'),
                           v.names=c('n4','n6','n8'))
 Exp1_bias_long <- gather(Exp1_bias_long,
                          nUs,
@@ -183,15 +183,15 @@ t.test(indivi_bias$mean,mu=1)
 
 #####----------d' Calculation----------#####
 Exp1_fh <- Exp1_fh%>%
-  mutate(d2.n4.dp=d2_n4_d_h_z-d2_n4_s_f_z)%>%
-  mutate(d2.n6.dp=d2_n6_d_h_z-d2_n6_s_f_z)%>%
-  mutate(d2.n8.dp=d2_n8_d_h_z-d2_n8_s_f_z)%>%
-  mutate(d3.n4.dp=d3_n4_d_h_z-d3_n4_s_f_z)%>%
-  mutate(d3.n6.dp=d3_n6_d_h_z-d3_n6_s_f_z)%>%
-  mutate(d3.n8.dp=d3_n8_d_h_z-d3_n8_s_f_z)
+  mutate(cubes.n4.dp=cubes_n4_d_h_z-cubes_n4_s_f_z)%>%
+  mutate(cubes.n6.dp=cubes_n6_d_h_z-cubes_n6_s_f_z)%>%
+  mutate(cubes.n8.dp=cubes_n8_d_h_z-cubes_n8_s_f_z)%>%
+  mutate(squares.n4.dp=squares_n4_d_h_z-squares_n4_s_f_z)%>%
+  mutate(squares.n6.dp=squares_n6_d_h_z-squares_n6_s_f_z)%>%
+  mutate(squares.n8.dp=squares_n8_d_h_z-squares_n8_s_f_z)
 
 Exp1_dpr <- Exp1_fh%>%
-  dplyr::select(subject,contains('dp'))
+  dplyr::select(subject,contains('.dp'))
 
 ## wide to long
 Exp1_dpr_long <- reshape(Exp1_dpr,
@@ -199,7 +199,7 @@ Exp1_dpr_long <- reshape(Exp1_dpr,
                          idvar = 'subject',
                          varying = c(2:7),
                          timevar='dim',
-                         times=c('squares','cubes'),
+                         times=c('cubes','squares'),
                          v.names=c('n4', 'n6','n8'))
 
 Exp1_dpr_long <- gather(Exp1_dpr_long,
@@ -229,7 +229,7 @@ Exp1_dpr_summary <- Exp1_dpr_long%>%
   )
 
 ## visualization - line graph with error bars
-##jpeg("Exp1b_dpr_line.jpeg", width = 8.5, height = 4.5, units = 'in', res = 300)
+#jpeg("Exp1b_dpr_line.jpeg", width = 8.5, height = 4.5, units = 'in', res = 300)
 ggplot(Exp1_dpr_summary,aes(x=nUs_num,y=mean,color=dim,linetype=dim))+
   geom_point(size=3)+
   geom_line(size=1)+
