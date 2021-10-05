@@ -22,6 +22,7 @@
 ##      9. Capacity Calculation
 ##      10. Capacity Descriptive Statistics
 ##      11. d' ANOVA
+##      12. d' Bayes Factor
 ## ---------------------------
 
 
@@ -40,6 +41,7 @@ library(tidyverse)
 library(reshape2)
 library(psych) # descriptive statistics
 library(effectsize)
+library(BayesFactor)
 
 
 ## ---------------------------
@@ -236,6 +238,10 @@ ggplot(Exp2_dpr_summary,aes(x=connectivity,y=mean,fill = dim))+
 aov2 <- aov(dp~dim*connectivity+Error(subject),data=Exp2_dpr_long)
 summary(aov2)
 eta_squared(aov2)
+#####----------Dprime Bayes Factor----------#####
+bf = anovaBF(dp ~ dim*connectivity+subject, data=Exp2_dpr_long, whichRandom="subject")
+bf
+plot(bf)
 
 
 

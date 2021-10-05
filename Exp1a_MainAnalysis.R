@@ -19,6 +19,7 @@
 ##      6. d' Calculation
 ##      7. d' Descriptive Statistics
 ##      8. d' ANOVA
+##      9. d' Bayes Factor
 ## ---------------------------
 
 
@@ -37,6 +38,7 @@ library(tidyverse)
 library(reshape2)
 library(psych) # descriptive statistics
 library(effectsize)
+library(BayesFactor)
 
 ## ---------------------------
 
@@ -261,10 +263,9 @@ aov1 <- aov(dp~dim*nUs+Error(subject),data=Exp1_dpr_long)
 summary(aov1)
 eta_squared(aov1)
 
-
-
-
-
-
+#####----------d' Bayes Factor----------#####
+bf = anovaBF(dp ~ dim*nUs+subject, data=Exp1_dpr_long, whichRandom="subject")
+bf
+plot(bf)
 
 

@@ -303,6 +303,10 @@ summary(aov2)
 eta_squared(aov2)
 tapply(Exp2_dpr_long$dp, list(Exp2_dpr_long$dim,Exp2_dpr_long$connectivity), mean)
 
+#####----------Dprime Bayes Factor----------#####
+bf = anovaBF(dp ~ dim*connectivity+subject, data=Exp2_dpr_long, whichRandom="subject")
+bf
+plot(bf)
 
 #####------Response Time Descriptive Statistics-----#####
 
