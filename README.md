@@ -1,7 +1,7 @@
 # Repeated ANOVA analysis for Human Working Memory
 
 This repository stores files related to statistical analyses for a visual working memory study. 
-The link to the article will be updated here after this publication is available online. 
+The link to the article (He et al., 2020, Visual working memory for connected 3D objects: effects of stimulus complexity, dimensionality and connectivity) is available [online](10.1186/s41235-022-00367-9). 
 
  **R libraries used:**
 ```
